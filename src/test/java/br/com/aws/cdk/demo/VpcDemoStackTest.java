@@ -1,6 +1,5 @@
 package br.com.aws.cdk.demo;
 
-import br.com.aws.cdk.demo.VpcDemoStack;
 import org.junit.jupiter.api.DisplayName;
 import software.amazon.awscdk.App;
 import software.amazon.awscdk.assertions.Template;
@@ -15,12 +14,14 @@ public class VpcDemoStackTest {
     @Test
     public void shouldTestVpcParameters() {
         var app = new App();
-        var stack = new VpcDemoStack(app, "VpcDemo");
+        var vpcDemoStack = new VpcDemoStack(app, "VpcDemo");
 
-        var template = Template.fromStack(stack);
+        var template = Template.fromStack(vpcDemoStack);
 
-        template.hasResourceProperties("AWS::EC2::VPC", new HashMap<String, Boolean>() {{
+        template.hasResourceProperties("AWS::EC2::VPC", new HashMap<String, Object>() {{
             put("EnableDnsHostnames", true);
+            put("EnableDnsSupport", true);
+            put("InstanceTenancy", "default");
         }});
     }
 }
