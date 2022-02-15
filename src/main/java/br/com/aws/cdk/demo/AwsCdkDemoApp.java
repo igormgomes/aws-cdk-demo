@@ -9,6 +9,9 @@ public class AwsCdkDemoApp {
 
         var vpcDemoStack = new VpcDemoStack(app, "VpcDemo");
 
+        var clusterDemoStack = new ClusterDemoStack(app, "ClusterDemo", vpcDemoStack.getVpc());
+        clusterDemoStack.addDependency(vpcDemoStack);
+
         app.synth();
     }
 }

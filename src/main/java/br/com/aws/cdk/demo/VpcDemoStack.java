@@ -7,6 +7,8 @@ import software.amazon.awscdk.StackProps;
 
 public class VpcDemoStack extends Stack {
 
+    private final Vpc vpc;
+
     public VpcDemoStack(final Construct scope, final String id) {
         this(scope, id, null);
     }
@@ -14,8 +16,12 @@ public class VpcDemoStack extends Stack {
     public VpcDemoStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
-        Vpc.Builder.create(this, "vpc-demo")
+        this.vpc = Vpc.Builder.create(this, "vpc-demo")
                 .maxAzs(3)
                 .build();
+    }
+
+    public Vpc getVpc() {
+        return vpc;
     }
 }
