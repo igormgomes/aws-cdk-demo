@@ -12,6 +12,8 @@ public class AwsCdkDemoApp {
         var clusterDemoStack = new ClusterDemoStack(app, "ClusterDemo", vpcDemoStack.getVpc());
         clusterDemoStack.addDependency(vpcDemoStack);
 
+        new DynamoDBDemoStack(app, "DynamoDBDemo");
+
         app.synth();
     }
 }
