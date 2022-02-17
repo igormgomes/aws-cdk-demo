@@ -16,7 +16,7 @@ public class VpcDemoStack extends Stack {
     public VpcDemoStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
-        this.vpc = Vpc.Builder.create(this, "vpc-demo")
+        this.vpc = Vpc.Builder.create(this, id)
                 .maxAzs(3)
                 .build();
     }
