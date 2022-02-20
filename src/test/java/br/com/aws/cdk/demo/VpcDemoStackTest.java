@@ -18,6 +18,7 @@ public class VpcDemoStackTest {
 
         var template = Template.fromStack(vpcDemoStack);
 
+        template.resourceCountIs("AWS::EC2::VPC", 1);
         template.hasResourceProperties("AWS::EC2::VPC", new HashMap<String, Object>() {{
             put("EnableDnsHostnames", true);
             put("EnableDnsSupport", true);
