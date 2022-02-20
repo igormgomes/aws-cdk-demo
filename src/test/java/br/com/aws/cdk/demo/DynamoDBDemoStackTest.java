@@ -1,5 +1,6 @@
 package br.com.aws.cdk.demo;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import software.amazon.awscdk.App;
@@ -12,12 +13,17 @@ import java.util.Map;
 @DisplayName("DynamoDB demo stack test")
 public class DynamoDBDemoStackTest {
 
+    private DynamoDBDemoStack dynamoDBDemoStack;
+
+    @BeforeEach
+    public void before()  {
+        var app = new App();
+        this.dynamoDBDemoStack = new DynamoDBDemoStack(app, "DynamoDBDemo");
+    }
+
     @Test
     public void shouldTestDynamoDBTableParameters() {
-        var app = new App();
-        var dynamoDbDemoStack = new DynamoDBDemoStack(app, "DynamoDBDemo");
-
-        var template = Template.fromStack(dynamoDbDemoStack);
+        var template = Template.fromStack(this.dynamoDBDemoStack);
 
         template.resourceCountIs("AWS::DynamoDB::Table", 1);
         template.hasResourceProperties("AWS::DynamoDB::Table", Map.of(
@@ -55,10 +61,7 @@ public class DynamoDBDemoStackTest {
 
     @Test
     public void shouldTestDynamoDBAutoScalingTarget() {
-        var app = new App();
-        var dynamoDbDemoStack = new DynamoDBDemoStack(app, "DynamoDBDemo");
-
-        var template = Template.fromStack(dynamoDbDemoStack);
+        var template = Template.fromStack(this.dynamoDBDemoStack);
 
         template.resourceCountIs("AWS::ApplicationAutoScaling::ScalableTarget", 2);
         template.hasResourceProperties("AWS::ApplicationAutoScaling::ScalableTarget", Map.of(
@@ -69,10 +72,7 @@ public class DynamoDBDemoStackTest {
 
     @Test
     public void shouldTestDynamoDBAutoScalingPolicy() {
-        var app = new App();
-        var dynamoDbDemoStack = new DynamoDBDemoStack(app, "DynamoDBDemo");
-
-        var template = Template.fromStack(dynamoDbDemoStack);
+        var template = Template.fromStack(this.dynamoDBDemoStack);
 
         template.resourceCountIs("AWS::ApplicationAutoScaling::ScalingPolicy", 2);
         template.hasResourceProperties("AWS::ApplicationAutoScaling::ScalingPolicy", Map.of(
