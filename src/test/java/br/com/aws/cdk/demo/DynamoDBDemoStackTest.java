@@ -60,7 +60,7 @@ public class DynamoDBDemoStackTest {
     }
 
     @Test
-    public void shouldTestDynamoDBAutoScalingTarget() {
+    public void shouldTestDynamoDBAutoScalingTargetWrite() {
         var template = Template.fromStack(this.dynamoDBDemoStack);
 
         template.resourceCountIs("AWS::ApplicationAutoScaling::ScalableTarget", 2);
@@ -71,14 +71,45 @@ public class DynamoDBDemoStackTest {
     }
 
     @Test
-    public void shouldTestDynamoDBAutoScalingPolicy() {
+    public void shouldTestDynamoDBAutoScalingTargetRead() {
+        var template = Template.fromStack(this.dynamoDBDemoStack);
+
+        template.resourceCountIs("AWS::ApplicationAutoScaling::ScalableTarget", 2);
+        template.hasResourceProperties("AWS::ApplicationAutoScaling::ScalableTarget", Map.of(
+                "MaxCapacity", 3,
+                "MinCapacity", 1
+        ));
+    }
+
+    @Test
+    public void shouldTestDynamoDBAutoScalingPolicyWrite() {
         var template = Template.fromStack(this.dynamoDBDemoStack);
 
         template.resourceCountIs("AWS::ApplicationAutoScaling::ScalingPolicy", 2);
         template.hasResourceProperties("AWS::ApplicationAutoScaling::ScalingPolicy", Map.of(
-                "TargetTrackingScalingPolicyConfiguration", Match.objectLike(Map.of(
+                "TargetTrackingScalingPolicyConfiguration", Match.objectEquals(Map.of(
+                        "PredefinedMetricSpecification", Match.objectEquals(Map.of(
+                                "PredefinedMetricType", "DynamoDBWriteCapacityUtilization"
+                        )),
                         "ScaleInCooldown", 20,
                         "ScaleOutCooldown", 20,
+                        "TargetValue", 60
+                ))
+        ));
+    }
+
+    @Test
+    public void shouldTestDynamoDBAutoScalingPolicyRead() {
+        var template = Template.fromStack(this.dynamoDBDemoStack);
+
+        template.resourceCountIs("AWS::ApplicationAutoScaling::ScalingPolicy", 2);
+        template.hasResourceProperties("AWS::ApplicationAutoScaling::ScalingPolicy", Map.of(
+                "TargetTrackingScalingPolicyConfiguration", Match.objectEquals(Map.of(
+                        "PredefinedMetricSpecification", Match.objectEquals(Map.of(
+                                "PredefinedMetricType", "DynamoDBReadCapacityUtilization"
+                        )),
+                        "ScaleInCooldown", 30,
+                        "ScaleOutCooldown", 30,
                         "TargetValue", 60
                 ))
         ));

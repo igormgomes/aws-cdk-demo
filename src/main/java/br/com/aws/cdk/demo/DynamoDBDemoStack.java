@@ -50,12 +50,12 @@ public class DynamoDBDemoStack extends Stack {
 
         table.autoScaleReadCapacity(EnableScalingProps.builder()
                         .minCapacity(1)
-                        .maxCapacity(6)
+                        .maxCapacity(3)
                         .build())
                 .scaleOnUtilization(UtilizationScalingProps.builder()
                         .targetUtilizationPercent(60)
-                        .scaleInCooldown(Duration.seconds(20))
-                        .scaleOutCooldown(Duration.seconds(20))
+                        .scaleInCooldown(Duration.seconds(30))
+                        .scaleOutCooldown(Duration.seconds(30))
                         .build());
     }
 }
