@@ -14,6 +14,8 @@ public class AwsCdkDemoApp {
 
         new DynamoDBDemoStack(app, "DynamoDBDemo");
 
+        new SNSDemoStack(app, "SNSDemo");
+
         app.synth();
     }
 }
